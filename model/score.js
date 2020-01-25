@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const schema = {
-    area: {  // 농구 코트 영역, 숫자로 저장
+    area: {
         type: Number,
         required: true
     },
