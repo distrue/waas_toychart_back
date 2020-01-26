@@ -16,3 +16,4 @@ const schema = {
 };
 
 export const ScoreModel = mongoose.model('score', schema);
+    

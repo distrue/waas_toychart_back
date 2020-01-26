@@ -1,11 +1,24 @@
 import {ScoreModel} from '../model/score';
 
+const check=(value)=>{
+    if(value===1 || value===-1) return true;
+    else false;
+};
+
 export async function getScore(area) {
-    // TODO: area가 number인지, 0~10 범위 안에 드는지 검증해야 함
-    const ans = await ScoreModel.find({area: area});
-    // console.log(ans);
-    // getScore에서 made와 fail을 돌려줄 것, 지금은 0,0 돌려줌
-    return [0,0];
+    console.log(area);
+    if(isNaN(area)) return 'InValid_area';
+    else{
+        if(area<0||area>10) return 'InValid_area';
+        else{
+            const ans = await ScoreModel.find({area: area},(err,score)=>{
+                if(err) throw Error(err);
+            });
+            // console.log(ans);
+            if(!ans) return 'NotFound'
+            return [ans.made,ans.fail];            
+        }
+    }
 }
 
 export async function setScore(area, made, fail) {
@@ -19,8 +32,8 @@ export async function setScore(area, made, fail) {
     await ScoreModel.create({area: area, made: made, fail: fail});
     
     // 2. 변경하는 경우
-    if(made) ans.made += made;
-    if(fail) ans.fail += fail;
+    if(check(made)) ans.made += made;
+    if(check(fail)) ans.fail += fail;
     await ans.save();
 
     // 정확하게 변경 되었는지, 그러지 못했으면 error를 throw 할 것
