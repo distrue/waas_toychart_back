@@ -30,17 +30,17 @@ export async function setScore(area, made, fail) {
             console.log(made);
             let change=0;
             if(ans){//ans exists
-                if(made===1||made===-1){
+                if(made==='+1'||made==='-1'){
                     ans.made+=Number(made);
                     change=1;
                 }
-                if(fail===+1||made===-1){
+                if(fail==='+1'||made==='-1'){
                     ans.fail+=Number(fail);
                     change=1;
                 }
                 if(change){
-                    if(ans.made<0)ans.made=0;
-                    if(ans.fail<0)ans.fail=0;
+                    if(ans.made<0){ans.made=0;return 'under zero';}
+                    if(ans.fail<0){ans.fail=0;return 'under zero';}
                 }
                 await ans.save((err)=>{
                     if(err)throw Error(err);
