@@ -11,7 +11,8 @@ export async function getScore(area) {
             return 'InValid_area';
         }
         else{
-            const ans = await ScoreModel.find({area: area});
+            const ans = await ScoreModel.findOne({area: area});
+            console.log(ans);
             if(!ans) return 'NotFound';
             else return [ans.made,ans.fail];            
         }
@@ -24,29 +25,30 @@ export async function setScore(area, made, fail) {
     else{
         if(area<0||area>10) return 'Invalid_area';
         else {
-            const ans = await ScoreModel.find({area: area});
-            Console.log(ans);
+            const ans = await ScoreModel.findOne({area: area});
+            console.log(ans);
             if(!ans) {
                 console.log('create new area');
-                await ScoreModel.create({area: area, made: made, fail: fail},(err,score)=>{
-                    if(err) throw Error(err);
-                });
-                console.log(area+'created');
+                await ScoreModel.create({area: area, made: made, fail: fail});
+                return 'created';
             }
             else{
                 if(made==='+1'||made==='-1'){
-                    if(ans.made+made>=0) ans.made+=made;
+                    console.log('change made');
+                    if(ans.made+Number(made)>=0) ans.made+=Number(made);
                     else return 'under_zero';
                 }
                 if(fail==='+1'||fail==='-1'){
-                    if(ans.fail+fail>=0) ans.fail+=fail;
+                    console.log('change fail');
+                    if(ans.fail+Number(fail)>=0) ans.fail+=Number(fail);
                     else return 'under_zero';
                 }
+                console.log(ans);
                 await ans.save((err)=>{
                     if(err) throw Error(err);
                 })
+                return true;
             }
-            return true;
         }
     }
 }
