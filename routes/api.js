@@ -10,6 +10,9 @@ Router.get('/score', async (req, res) => {
     // 어떤 area인지 parameter에서 담아서 처리
     try {
         const score = await getScore(req.query.area);
+        if(score === null) {
+            score = [0, 0];
+        }
         if(typeof score[0] === 'number') {
             return res.status(200).json({success: true, score: score});
         }
@@ -33,6 +36,7 @@ Router.put('/score', async (req, res) => {
         }
         else {
             // error reason 처리 필요, setScore에서 reason을 돌려줄 것
+            console.log(ask);
             return res.status(400).json({success: false, reason: ask});
         }
     } catch(err) {
