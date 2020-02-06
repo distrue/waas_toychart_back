@@ -33,6 +33,7 @@ export async function setScore(area, made, fail) {
                 return 'created';
             }
             else{
+                /*
                 if(made==='+1'||made==='-1'){
                     console.log('change made');
                     if(ans.made+Number(made)>=0) ans.made+=Number(made);
@@ -48,6 +49,16 @@ export async function setScore(area, made, fail) {
                     if(err) throw Error(err);
                 })
                 return true;
+                */
+                if(Number(made)>=0)
+                   ans.made=Number(made);
+                if(Number(fail)>=0)
+                   ans.fail=Number(fail);
+                await ans.save((err)=>{
+                    if(err) throw Error(err);
+                })
+               console.log(ans);
+               return true;
             }
         }
     }
